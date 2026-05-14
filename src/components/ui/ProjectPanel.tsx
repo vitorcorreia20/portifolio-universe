@@ -20,9 +20,8 @@ export function ProjectPanel({ star, onClose }: ProjectPanelProps) {
   useEffect(() => {
     if (star) {
       setLoading(true);
-      setReadme(""); // Limpa o conteúdo anterior
+      setReadme(""); 
       
-      // Se for o núcleo ou um repo, tentamos buscar o README
       const repoName = star.id === 'profile-core' ? 'vitorcorreia20' : star.name;
       
       fetchRepoReadme('vitorcorreia20', repoName).then(content => {
@@ -40,7 +39,6 @@ export function ProjectPanel({ star, onClose }: ProjectPanelProps) {
 
       <div className="fixed top-0 right-0 h-screen w-full max-w-[550px] bg-[#0a0a0a]/95 backdrop-blur-xl border-l border-[#007ACC]/30 p-0 z-50 text-white shadow-2xl flex flex-col animate-in slide-in-from-right-8 duration-300">
         
-        {/* Header Estilizado */}
         <div className="p-6 border-b border-gray-800 flex justify-between items-center bg-black/40">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-[#007ACC]/20 rounded-lg">
@@ -57,16 +55,13 @@ export function ProjectPanel({ star, onClose }: ProjectPanelProps) {
           </button>
         </div>
 
-        {/* Área de Conteúdo com Scroll */}
         <div className="flex-grow overflow-y-auto custom-scrollbar p-8">
           
-          {/* Nome e Badge */}
           <div className="mb-8">
             <span className="text-[#007ACC] font-mono text-xs mb-2 block">{'>'} source_path: {star.url}</span>
             <h1 className="text-4xl font-extrabold mb-4">{star.name.replace(/-/g, ' ')}</h1>
           </div>
 
-          {/* Renderização do README ou Descrição Simples */}
           <div className="prose prose-invert max-w-none prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800 prose-headings:text-[#007ACC]">
             {loading ? (
               <div className="flex flex-col items-center justify-center py-20 text-gray-500">
@@ -76,7 +71,7 @@ export function ProjectPanel({ star, onClose }: ProjectPanelProps) {
             ) : readme ? (
               <ReactMarkdown 
                 remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeRaw]} // <--- ADICIONAMOS ESTA LINHA
+                rehypePlugins={[rehypeRaw]} 
               >
                 {readme}
               </ReactMarkdown>
@@ -88,7 +83,6 @@ export function ProjectPanel({ star, onClose }: ProjectPanelProps) {
           </div>
         </div>
 
-        {/* Footer com Ações */}
         <div className="p-6 border-t border-gray-800 bg-black/40">
           <a 
             href={star.url} 
@@ -102,7 +96,6 @@ export function ProjectPanel({ star, onClose }: ProjectPanelProps) {
         </div>
       </div>
 
-      {/* Estilos para o Scrollbar (Adicione no seu globals.css se quiser) */}
       <style jsx>{`
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }

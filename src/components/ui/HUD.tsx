@@ -1,4 +1,3 @@
-// src/components/ui/HUD.tsx
 "use client";
 
 import { Mail, FileText, User, Orbit } from 'lucide-react';
@@ -32,7 +31,6 @@ export function HUD({ onOpenProfile }: HUDProps) {
           </span>
         </div>
 
-        {/* Botão de Ação Principal (Core) */}
         <button
           onClick={onOpenProfile}
           className="pointer-events-auto group flex items-center gap-3 bg-[#007ACC]/10 hover:bg-[#007ACC]/30 border border-[#007ACC]/40 hover:border-[#007ACC] text-white px-6 py-4 rounded-2xl backdrop-blur-md transition-all duration-300 shadow-[0_0_20px_rgba(0,122,204,0.15)] hover:shadow-[0_0_30px_rgba(0,122,204,0.5)]"
@@ -43,7 +41,6 @@ export function HUD({ onOpenProfile }: HUDProps) {
       </div>
 
 
-      {/* ================= RODAPÉ ================= */}
       <div className="flex flex-col-reverse sm:flex-row justify-between items-center sm:items-end gap-6">
         
         {/* Instrução Visual Elegante */}
@@ -54,10 +51,8 @@ export function HUD({ onOpenProfile }: HUDProps) {
           </span>
         </div>
 
-        {/* Painel de Redes Sociais Integrado */}
         <div className="pointer-events-auto flex items-center gap-2 p-2 md:p-3 bg-black/30 backdrop-blur-md border border-white/10 rounded-full shadow-xl">
           <SocialLink href="https://github.com/vitorcorreia20" icon={<FaGithub size={22} />} title="GitHub" />
-          {/* ATENÇÃO: Atualize os links abaixo com os seus dados reais */}
           <SocialLink href="https://linkedin.com/in/vitordossantoscorreia" icon={<FaLinkedin size={22} />} title="LinkedIn" />
           <SocialLink href="mailto:contato.vitorcorreiadm@gmail.com" icon={<Mail size={22} />} title="Email" />
           
@@ -71,7 +66,6 @@ export function HUD({ onOpenProfile }: HUDProps) {
   );
 }
 
-// Componente auxiliar para deixar o código dos botões sociais mais limpo
 function SocialLink({ href, icon, title, special = false }: { href: string, icon: React.ReactNode, title: string, special?: boolean }) {
   return (
     <a 

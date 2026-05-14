@@ -1,4 +1,3 @@
-// src/components/3d/Star.tsx
 "use client";
 
 import { useRef, useState } from 'react';
@@ -15,26 +14,21 @@ export function Star({ data, onStarClick }: StarProps) {
   const meshRef = useRef<Mesh>(null);
   const [hovered, setHovered] = useState(false);
 
-  // O Motor da Estrela: Mantém ela girando e controla a pulsação
   useFrame(() => {
     if (meshRef.current) {
       meshRef.current.rotation.y += 0.005;
       meshRef.current.rotation.x += 0.002;
       
-      // Se o mouse estiver em cima, a estrela cresce 15% suavemente
       const targetScale = hovered ? 1.15 : 1;
       meshRef.current.scale.lerp({ x: targetScale, y: targetScale, z: targetScale } as any, 0.1);
     }
   });
 
-// O Dicionário de Cores
   let color = '#ffffff';
 
-  // Regra especial para o Núcleo
   if (data.id === 'profile-core') {
-    color = '#FFD700'; // Dourado Radiante
+    color = '#FFD700';
   } else {
-    // Cores normais para as outras linguagens
     switch (data.language) {
       case 'TypeScript': color = '#007ACC'; break;
       case 'JavaScript': color = '#F7DF1E'; break;
@@ -57,12 +51,12 @@ export function Star({ data, onStarClick }: StarProps) {
       }}
       onPointerOver={(e) => {
         e.stopPropagation();
-        setHovered(true); // Ativa o brilho extra
+        setHovered(true);
         document.body.style.cursor = 'pointer';
       }}
       onPointerOut={(e) => {
         e.stopPropagation();
-        setHovered(false); // Desativa o brilho extra
+        setHovered(false);
         document.body.style.cursor = 'auto';
       }}
     >
@@ -70,7 +64,6 @@ export function Star({ data, onStarClick }: StarProps) {
       <meshStandardMaterial 
         color={color} 
         emissive={color} 
-        // Aumenta o brilho da luz quando o mouse passa por cima
         emissiveIntensity={hovered ? data.brightness * 2 : data.brightness} 
         roughness={0.2}
       />
