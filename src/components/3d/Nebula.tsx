@@ -43,12 +43,14 @@ export function Nebula() {
           count={positions.length / 3}
           array={positions}
           itemSize={3}
+          args = {[positions, 3]}
         />
         <bufferAttribute
           attach="attributes-color"
           count={colors.length / 3}
           array={colors}
           itemSize={3}
+          args={[colors, 3]}
         />
       </bufferGeometry>
       {/* O Material da Nebulosa: Brilhante, transparente e macio */}
