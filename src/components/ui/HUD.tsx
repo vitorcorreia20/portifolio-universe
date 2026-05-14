@@ -47,7 +47,7 @@ export function HUD({ onOpenProfile }: HUDProps) {
         <div className="pointer-events-auto flex items-center gap-3 px-5 py-3 bg-black/30 backdrop-blur-md border border-white/10 rounded-full shadow-xl">
           <Orbit className="text-[#007ACC] animate-[spin_4s_linear_infinite]" size={18} />
           <span className="text-gray-300 font-mono text-xs uppercase tracking-widest opacity-80">
-            Arraste para navegar
+            Arraste para navegar e clique nos planetas para visualizar os projetos
           </span>
         </div>
 
