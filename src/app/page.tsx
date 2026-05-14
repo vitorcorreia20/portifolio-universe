@@ -1,30 +1,47 @@
-// src/app/page.tsx
-import { fetchGithubProjects } from '@/services/github';
-import { PortfolioClient } from '@/components/PortfolioClient';
+"use client";
 
-export default async function Home() {
-  const myProjects = await fetchGithubProjects();
+import { useState, useEffect } from 'react';
+import { Galaxy } from '@/components/3d/Galaxy';
+import { ProjectPanel } from '@/components/ui/ProjectPanel';
+import { HUD } from '@/components/ui/HUD'; // <-- 1. IMPORTAR A HUD
+import { fetchGithubProjects } from '@/services/github';
+import { ProjectStar } from '@/types/universe';
+
+export default function Home() {
+  const [stars, setStars] = useState<ProjectStar[]>([]);
+  const [selectedStar, setSelectedStar] = useState<ProjectStar | null>(null);
+
+  useEffect(() => {
+    fetchGithubProjects().then(setStars);
+  }, []);
+
+  // <-- 2. ADICIONAR ESTA FUNÇÃO AQUI DENTRO
+  const handleOpenProfile = () => {
+    // Procura na lista de estrelas aquela que é o seu núcleo (vitorcorreia20)
+    const coreStar = stars.find(star => star.id === 'profile-core');
+    if (coreStar) {
+      setSelectedStar(coreStar);
+    }
+  };
 
   return (
-    // Tiramos o flex daqui para o Canvas dominar o fundo absoluto
-    <main className="relative w-full h-screen bg-[#050505] text-white overflow-hidden">
+    <main className="relative w-screen h-screen bg-black overflow-hidden">
       
-      {/* Camada 1: O 3D (Recebe os cliques normais) */}
-      <PortfolioClient starsData={myProjects} />
+      {/* 3. ADICIONAR A HUD AQUI (Acima da Galáxia) */}
+      <HUD onOpenProfile={handleOpenProfile} />
       
-      {/* Camada 2: O Texto (pointer-events-none garante que o mouse "atravesse" o texto) */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="text-center font-mono space-y-4 select-none">
-          <p className="text-gray-400">// GITHUB DATA SYNCED</p>
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-white drop-shadow-xl">
-            VITOR_<span className="text-[#007ACC]">CORREIA</span>
-          </h1>
-          <p className="text-sm md:text-base text-gray-400 max-w-md mx-auto">
-            Clique e arraste para explorar. Selecione uma estrela para ver os logs.
-          </p>
-        </div>
-      </div>
+      {/* A Galáxia que já estava aí */}
+      <Galaxy 
+        starsData={stars} 
+        onStarClick={setSelectedStar} 
+      />
       
+      {/* O Painel que já estava aí */}
+      <ProjectPanel 
+        star={selectedStar} 
+        onClose={() => setSelectedStar(null)} 
+      />
+
     </main>
   );
 }

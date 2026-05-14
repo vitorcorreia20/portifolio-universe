@@ -27,17 +27,24 @@ export function Star({ data, onStarClick }: StarProps) {
     }
   });
 
-  // O Dicionário de Cores
+// O Dicionário de Cores
   let color = '#ffffff';
-  switch (data.language) {
-    case 'TypeScript': color = '#007ACC'; break;
-    case 'JavaScript': color = '#F7DF1E'; break;
-    case 'Java':       color = '#ED8B00'; break;
-    case 'Python':     color = '#3670A0'; break;
-    case 'HTML':       color = '#E34F26'; break;
-    case 'CSS':        color = '#1572B6'; break;
-    case 'C#':         color = '#239120'; break;
-    case 'PHP':        color = '#777BB4'; break;
+
+  // Regra especial para o Núcleo
+  if (data.id === 'profile-core') {
+    color = '#FFD700'; // Dourado Radiante
+  } else {
+    // Cores normais para as outras linguagens
+    switch (data.language) {
+      case 'TypeScript': color = '#007ACC'; break;
+      case 'JavaScript': color = '#F7DF1E'; break;
+      case 'Java':       color = '#ED8B00'; break;
+      case 'Python':     color = '#3670A0'; break;
+      case 'HTML':       color = '#E34F26'; break;
+      case 'CSS':        color = '#1572B6'; break;
+      case 'C#':         color = '#239120'; break;
+      case 'PHP':        color = '#777BB4'; break;
+    }
   }
 
   return (

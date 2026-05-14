@@ -1,56 +1,73 @@
 // src/services/github.ts
-
 import { ProjectStar, TechLanguage } from '@/types/universe';
 
-// Calcula a posição aleatória, mas consistente no mapa 3D
-function generateRandomCoordinates(seed: number) {
-  // Uma função simples para gerar posições fixas baseadas no tamanho do repo (para não piscar)
-  const spread = 8;
+// Aumentamos os valores aqui para "esticar" a galáxia
+function generateSpiralCoordinates(index: number) {
+  // Aumentamos a distância inicial (5) e o multiplicador de distância entre estrelas (2.5)
+  const radius = 8 + (index * 2.5); 
+  
+  // Ângulo para criar o braço da espiral
+  const angle = index * 0.7; 
+  
   return {
-    x: (Math.sin(seed) * spread),
-    y: (Math.cos(seed * 2) * spread),
-    z: (Math.sin(seed * 3) * spread) - 2, // Empurra um pouco pra trás
+    x: Math.cos(angle) * radius,
+    y: (Math.random() - 0.5) * 2, // Uma leve flutuação vertical para dar profundidade 3D
+    z: Math.sin(angle) * radius,
   };
 }
 
 export async function fetchGithubProjects(): Promise<ProjectStar[]> {
-  const username = process.env.NEXT_PUBLIC_GITHUB_USERNAME || 'vitorcorreia20';
+  const username = 'vitorcorreia20'; // Forçado conforme seu pedido
   
-  // Como estamos testando, não usaremos o Token ainda para evitar erros, usaremos a API pública
-  const res = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=10`);
+  const res = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=30`, {
+    next: { revalidate: 3600 }
+  });
   
-  if (!res.ok) {
-    console.error('Falha ao buscar repositórios do GitHub');
-    return [];
-  }
+  if (!res.ok) return [];
 
   const repos = await res.json();
 
-  // Mapeia os dados do GitHub para a nossa tipagem "ProjectStar"
-  const stars: ProjectStar[] = repos.map((repo: any) => {
-    
-    // Normalizando a linguagem
-    const lang: TechLanguage = repo.language ? (repo.language as TechLanguage) : 'Other';
+  // 1. Mapeia os repositórios (Estrelas da periferia)
+  const stars: ProjectStar[] = repos
+    .filter((repo: any) => !repo.fork && repo.name !== username) // Remove forks e o próprio repo do profile da lista comum
+    .map((repo: any, index: number) => {
+      const lang: TechLanguage = repo.language || 'Other';
+      
+      return {
+        id: repo.id.toString(),
+        name: repo.name,
+        description: repo.description,
+        url: repo.html_url,
+        language: lang,
+        size: 0.6 + (repo.size / 20000), // Estrelas menores que o núcleo
+        brightness: 0.8,
+        coordinates: generateSpiralCoordinates(index),
+      };
+    });
 
-    // Calculando tamanho (size) e brilho (brightness) baseado em estrelas e tamanho em KB
-    const baseSize = 0.8;
-    const calculatedSize = baseSize + (repo.size / 10000); // 10000KB (10MB) aumenta a estrela em 1 ponto
-    const clampedSize = Math.min(Math.max(calculatedSize, 0.5), 3); // Entre 0.5 e 3 de tamanho
+  // 2. O NÚCLEO: Vitor Correia Profile
+  const profileCore: ProjectStar = {
+    id: 'profile-core',
+    name: 'VITOR_CORREIA (CORE)',
+    description: 'Acessando dados mestre... Este é o repositório principal de perfil. Contém a biografia, competências técnicas e o mapa completo do universo.',
+    url: `https://github.com/${username}/${username}`, // Link direto para o Profile Readme
+    language: 'Other',
+    size: 5.0, // Massa crítica maior
+    brightness: 8, // O ponto mais brilhante
+    coordinates: { x: 0, y: 0, z: 0 }, // Centro do universo
+  };
 
-    const brightness = 1 + (repo.stargazers_count * 0.2);
+  return [profileCore, ...stars];
+}
 
-    return {
-      id: repo.id.toString(),
-      name: repo.name,
-      description: repo.description,
-      url: repo.html_url,
-      language: lang,
-      size: clampedSize,
-      brightness: brightness,
-      coordinates: generateRandomCoordinates(repo.id),
-    };
-  });
-
-  // Filtra forks para mostrar só projetos originais seus (opcional)
-  return stars.filter((star: any) => !star.fork);
+export async function fetchRepoReadme(username: string, repo: string): Promise<string> {
+  // Tentamos buscar o README da branch 'main' ou 'master'
+  const branches = ['main', 'master'];
+  
+  for (const branch of branches) {
+    const res = await fetch(`https://raw.githubusercontent.com/${username}/${repo}/${branch}/README.md`);
+    if (res.ok) return await res.text();
+  }
+  
+  return "";
 }
