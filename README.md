@@ -5,7 +5,7 @@
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Three.js](https://img.shields.io/badge/Three.js-black?style=for-the-badge&logo=three.js&logoColor=white)
 
-Um portfólio interativo em 3D construído para ir além da clássica landing page estática. Este projeto renderiza uma galáxia onde cada estrela representa um projeto puxado diretamente da API do GitHub, envolto por uma interface (HUD) moderna com efeito Glassmorphism.
+Um portfólio interativo em 3D construído para ir além da clássica landing page estática. Este projeto renderiza um sistema Solar onde cada planeta representa um projeto e o Sol representa o profile README, puxado diretamente da API do GitHub, envolto por uma interface (HUD) moderna com efeito Glassmorphism.
 
 > 🔗 **[Acesse o Portfólio Online Aqui](https://portifolio-universe.vercel.app/)**
 
