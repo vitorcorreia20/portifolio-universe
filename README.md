@@ -7,7 +7,7 @@
 
 Um portfólio interativo em 3D construído para ir além da clássica landing page estática. Este projeto renderiza um sistema Solar onde cada planeta representa um projeto e o Sol representa o profile README, puxado diretamente da API do GitHub, envolto por uma interface (HUD) moderna com efeito Glassmorphism.
 
-> 🔗 **[Acesse o Portfólio Online Aqui](https://portifolio-universe.vercel.app/)**
+> 🔗 **[Acesse o Portfólio Online Aqui](https://vitorcorreia.vercel.app/)**
 
 ## ✨ Funcionalidades
 
